@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sajee Diukshan — Networking &amp; IT Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E1116;
+    --bg-soft: #141922;
+    --surface: #171D26;
+    --line: #262E3A;
+    --text: #E7EAEE;
+    --text-dim: #8B95A1;
+    --text-faint: #5C6572;
+    --signal: #57A776;
+    --signal-dim: #3C7454;
+    --wire: #4E7FB0;
+    --radius: 3px;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  a{ color: var(--signal); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---- Nav ---- */
+  nav{
+    position: sticky; top:0; z-index: 20;
+    background: rgba(14,17,22,0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content: space-between;
+    height: 60px;
+  }
+  .brand{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600; font-size:1rem; color:var(--text);
+    display:flex; align-items:center; gap:9px;
+  }
+  .brand .dot{
+    width:8px; height:8px; border-radius:50%;
+    background: var(--signal);
+    box-shadow: 0 0 0 3px rgba(87,167,118,0.18);
+  }
+  .navlinks{ display:flex; gap: 26px; }
+  .navlinks a{ color: var(--text-dim); font-size:0.92rem; }
+  .navlinks a:hover{ color: var(--text); text-decoration:none; }
+  @media (max-width: 620px){ .navlinks{ display:none; } }
+
+  /* ---- Hero ---- */
+  .hero{
+    position: relative;
+    padding: 84px 0 70px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--bg-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-soft) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, black 10%, transparent 75%);
+    opacity: 0.6;
+  }
+  .hero .wrap{ position: relative; }
+  .eyebrow-line{
+    display:flex; align-items:center; gap:10px;
+    color: var(--text-faint); font-size: 0.85rem; margin-bottom: 22px;
+  }
+  .eyebrow-line svg{ flex-shrink:0; }
+  .hero h1{
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    line-height: 1.08;
+    max-width: 11ch;
+  }
+  .hero .role{
+    color: var(--signal);
+    font-size: 1.15rem;
+    margin-top: 14px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight: 500;
+  }
+  .hero p.lede{
+    max-width: 56ch;
+    color: var(--text-dim);
+    margin-top: 22px;
+    font-size: 1.02rem;
+  }
+  .hero-actions{
+    display:flex; gap:14px; margin-top: 34px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 11px 20px;
+    border-radius: var(--radius);
+    font-size: 0.92rem;
+    font-weight:500;
+    border: 1px solid var(--line);
+  }
+  .btn-solid{
+    background: var(--signal);
+    color: #0E1116;
+    border-color: var(--signal);
+  }
+  .btn-solid:hover{ background:#68b986; text-decoration:none; }
+  .btn-ghost{ color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--text-dim); text-decoration:none; }
+
+  /* ---- Sections ---- */
+  section{ padding: 58px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .sec-head{
+    display:flex; align-items: baseline; gap: 14px;
+    margin-bottom: 30px;
+  }
+  .sec-num{
+    font-family:'Space Grotesk',sans-serif;
+    color: var(--text-faint);
+    font-size: 0.85rem;
+  }
+  .sec-head h2{ font-size: 1.5rem; }
+
+  .about-body{ max-width: 62ch; color: var(--text-dim); font-size: 1.02rem; }
+  .about-body strong{ color: var(--text); font-weight: 500; }
+
+  /* Timeline (experience + education combined visually) */
+  .entry{
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 34px;
+  }
+  .entry:last-child{ margin-bottom: 0; }
+  .entry::before{
+    content:"";
+    position:absolute; left:0; top: 6px;
+    width:9px; height:9px; border-radius:50%;
+    background: var(--bg);
+    border: 2px solid var(--wire);
+  }
+  .entry::after{
+    content:"";
+    position:absolute; left:4px; top:20px; bottom:-34px;
+    width:1px; background: var(--line);
+  }
+  .entry:last-child::after{ display:none; }
+  .entry-head{
+    display:flex; justify-content: space-between; align-items:baseline;
+    flex-wrap:wrap; gap: 6px 16px;
+  }
+  .entry-title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:1.05rem; }
+  .entry-org{ color: var(--text-dim); font-size:0.95rem; }
+  .entry-date{
+    font-size: 0.85rem; color: var(--text-faint); white-space:nowrap;
+  }
+  .entry ul{
+    margin: 12px 0 0; padding-left: 18px; color: var(--text-dim);
+    font-size: 0.96rem;
+  }
+  .entry ul li{ margin-bottom: 6px; }
+  .entry ul li::marker{ color: var(--wire); }
+
+  /* Skills */
+  .skill-groups{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 40px;
+  }
+  @media (max-width: 620px){ .skill-groups{ grid-template-columns: 1fr; gap:28px; } }
+  .skill-groups h3{
+    font-size: 0.82rem; color: var(--text-faint);
+    text-transform: none; letter-spacing: 0.02em;
+    margin-bottom: 14px; font-weight: 500;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap: 9px; }
+  .chip{
+    padding: 7px 13px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    background: var(--surface);
+  }
+  .lang-list{ display:flex; flex-direction:column; gap: 10px; }
+  .lang-row{ display:flex; align-items:center; gap: 12px; font-size:0.94rem; color: var(--text-dim); }
+  .lang-bar{ flex:1; height:3px; background: var(--line); position:relative; max-width: 160px; }
+  .lang-bar span{ position:absolute; left:0; top:0; height:100%; background: var(--wire); }
+
+  /* Contact / references */
+  .contact-grid{
+    display:grid; grid-template-columns: 1.1fr 1fr; gap: 48px;
+  }
+  @media (max-width: 620px){ .contact-grid{ grid-template-columns: 1fr; gap: 34px; } }
+  .contact-list{ display:flex; flex-direction:column; gap: 16px; }
+  .contact-item{ display:flex; gap: 12px; align-items:flex-start; }
+  .contact-item svg{ flex-shrink:0; margin-top:3px; color: var(--wire); }
+  .contact-item div{ font-size: 0.95rem; color: var(--text-dim); }
+  .contact-item strong{ display:block; color: var(--text); font-weight:500; font-size:0.95rem; }
+
+  .ref-card{
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px; margin-bottom: 14px; background: var(--surface);
+  }
+  .ref-card:last-child{ margin-bottom: 0; }
+  .ref-name{ font-weight: 600; font-size: 0.95rem; }
+  .ref-role{ color: var(--text-dim); font-size: 0.85rem; margin-top: 3px; }
+  .ref-phone{ color: var(--text-faint); font-size: 0.85rem; margin-top: 8px; }
+
+  footer{
+    padding: 30px 0 48px;
+    text-align:center;
+    color: var(--text-faint);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Sajee Diukshan</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="eyebrow-line">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/></svg>
+      Wattala, Sri Lanka
+    </div>
+    <h1>Sajee Diukshan</h1>
+    <div class="role">Computing Undergraduate — Networking</div>
+    <p class="lede">Specializing in computer networks, IT infrastructure and cybersecurity. Currently building practical, hands-on skills toward a career in networking — one connection at a time.</p>
+    <div class="hero-actions">
+      <a class="btn btn-solid" href="mailto:sdiukshan27@gmail.com">Email me</a>
+      <a class="btn btn-ghost" href="tel:+94777183732">+94 77 718 3732</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
+    <p class="about-body">
+      A <strong>Computing Undergraduate specializing in Networking</strong>, with a strong interest in computer networks, IT infrastructure and cybersecurity. A quick learner with solid problem-solving instincts and a clear motivation to turn theory into practical IT skills — currently pursuing a Pearson BTEC HND while gaining professional experience on the business side, and building a foundation for a long-term career in networking.
+    </p>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Work Experience</h2></div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-title">Business Consultant</div>
+          <div class="entry-org">SBT CO., LTD — Sri Lanka</div>
+        </div>
+        <div class="entry-date">Aug 2024 — Present</div>
+      </div>
+      <ul>
+        <li>Managed customer communication and follow-ups to streamline sales coordination</li>
+        <li>Coordinated sales activities while maintaining professional customer relationships</li>
+        <li>Fostered client relationships to enhance overall customer satisfaction</li>
+        <li>Maintained productivity through challenging deadlines in a target-driven environment</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Education &amp; Certifications</h2></div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-title">Pearson BTEC HND in Computing (Networking)</div>
+          <div class="entry-org">CINEC Campus</div>
+        </div>
+        <div class="entry-date">2026 — Present</div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-title">Networking Basics</div>
+          <div class="entry-org">Cisco Networking Academy</div>
+        </div>
+        <div class="entry-date">Oct 2026 — Present</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Skills &amp; Languages</h2></div>
+    <div class="skill-groups">
+      <div>
+        <h3>Professional skills</h3>
+        <div class="chip-row">
+          <span class="chip">Time management</span>
+          <span class="chip">Works well under pressure</span>
+          <span class="chip">Creativity</span>
+          <span class="chip">Teamwork</span>
+          <span class="chip">Problem-solving</span>
+          <span class="chip">Communication</span>
+          <span class="chip">Adaptability</span>
+          <span class="chip">Critical thinking</span>
+        </div>
+      </div>
+      <div>
+        <h3>Languages</h3>
+        <div class="lang-list">
+          <div class="lang-row">English <div class="lang-bar"><span style="width:85%"></span></div></div>
+          <div class="lang-row">Tamil <div class="lang-bar"><span style="width:100%"></span></div></div>
+          <div class="lang-row">Sinhala <div class="lang-bar"><span style="width:90%"></span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Contact &amp; References</h2></div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-list">
+          <div class="contact-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8l9 6 9-6M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg>
+            <div><strong>Email</strong><a href="mailto:sdiukshan27@gmail.com">sdiukshan27@gmail.com</a></div>
+          </div>
+          <div class="contact-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <div><strong>Phone</strong><a href="tel:+94777183732">+94 77 718 3732</a></div>
+          </div>
+          <div class="contact-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div><strong>Location</strong>No 82/1 Kalyani Mawatha, Wattala, 11300, Sri Lanka</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ref-card">
+          <div class="ref-name">Mr. M.T. Kannan</div>
+          <div class="ref-role">Police Civil Officer — Police Headquarters, Colombo 01</div>
+          <div class="ref-phone">+94 77 217 7675</div>
+        </div>
+        <div class="ref-card">
+          <div class="ref-name">Mr. Prashanth Pathmaraja</div>
+          <div class="ref-role">Senior Business Consultant — SBT CO., LTD, Sri Lanka</div>
+          <div class="ref-phone">+94 76 643 6552</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Sajee Diukshan — Built for a career in networking.
+</footer>
+
+</body>
+</html>
